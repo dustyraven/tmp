@@ -1,0 +1,27 @@
+.currency-BGN:before {
+  content: "BGN"; }
+
+.currency-EUR:before {
+  content: "EUR"; }
+
+.card.prod {
+  margin-top: 10px;
+  padding-bottom: 2.5em; }
+  .card.prod .card-img-overlay {
+    display: none; }
+  .card.prod:hover .card-img-overlay {
+    display: initial;
+    background: rgba(255, 255, 255, 0.75); }
+  .card.prod .prod-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    margin: 1em 0; }
+
+.avail-OutOfStock button {
+  display: none; }
+  .avail-OutOfStock button:before {
+    content: "Nema";
+    line-height: 2.5em; }
+
+/*# sourceMappingURL=style.css.map */

@@ -1,0 +1,14 @@
+{
+    "selector": "cont1",
+    "template": "{{#data}}<div class=\"blk\">ala bala {{name}}</div>{{/data}}",
+    "data": [
+        {
+            "name": "Dusty",
+            "family": "Raven"
+        },
+        {
+            "name": "Spas",
+            "family": "Petrov"
+        }
+    ]
+}
