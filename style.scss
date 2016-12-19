@@ -17,3 +17,9 @@
     display:none;
     &:before {content:"Nema";line-height:2.5em;}
 }
+
+
+
+.carousel-item>img {
+    width: 100%;
+}
