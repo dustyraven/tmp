@@ -69,6 +69,7 @@ $data = [
     ];
 
 
+
 if(array_key_exists('product', $_GET))
 {
     $data = updateData($data, 'title', (object)['selector' => 'title','text' => 'Product']);
