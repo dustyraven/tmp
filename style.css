@@ -5,7 +5,7 @@
   content: "EUR"; }
 
 .card.prod {
-  margin-top: 10px;
+  margin-bottom: 10px;
   padding-bottom: 2.5em; }
   .card.prod .card-img-overlay {
     display: none; }
