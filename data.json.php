@@ -38,7 +38,7 @@ $data = [
         //(object)['url' => basename($_SERVER['HTTP_REFERER'])],
 
         (object)[
-            'selector'  => '#cont1',
+            'selector'  => '#main',
             'template'  => getTpl('btn'),
             'data'      =>  [
                 (object)['name' => 'Dusty', 'family' => 'Raven'],
@@ -75,7 +75,7 @@ if(array_key_exists('product', $_GET))
     $data = updateData($data, 'url', (object)['url' => 'product']);
 
     $data[] = (object)[
-                'selector'  => '#cont1',
+                'selector'  => '#main',
                 'template'  => getTpl('product'),
                 'data'      =>  [(object)[
                                     'name' => 'Prod1 name ala bala portokala',
@@ -118,7 +118,7 @@ if(array_key_exists('list', $_GET))
     $data = updateData($data, 'url', (object)['url' => 'list']);
 
     $data[] = (object)[
-                'selector'  => '#cont1',
+                'selector'  => '#main',
                 'template'  => getTpl('products'),
                 'data'      =>  [
                     (object)['name' => 'Prod1 name ala bala portokala', 'description' => 'Prod1 short description', 'price' => 1.23, 'currency' => 'BGN', 'availability' => 'InStock'],
