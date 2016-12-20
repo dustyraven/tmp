@@ -148,7 +148,8 @@ function dataResponce(responce) {
 
 document.addEventListener('click', _click, true);
 
-dataLoad();
+var base = 'https://dusty.work/tmp/', href = document.location.href.replace(base,'');
+dataLoad(href);
 
 
 
