@@ -19,7 +19,7 @@
 <body>
 
 
-    <nav class="navbar navbar-light bg-faded">
+    <nav class="navbar navbar-light bg-faded navbar-fixed-top">
         <progress class="progress progress-striped progress-animated" value="100" max="100">
             Loading...
         </progress>
