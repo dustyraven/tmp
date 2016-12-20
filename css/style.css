@@ -31,9 +31,9 @@
 
 .avail-OutOfStock button {
   display: none; }
-  .avail-OutOfStock button:before {
-    content: "Nema";
-    line-height: 2.5em; }
+.avail-OutOfStock:before {
+  content: "Comming soon";
+  line-height: 2.5em; }
 
 .carousel-item > img {
   width: 100%; }

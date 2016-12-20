@@ -26,10 +26,11 @@
     }
 
 }
-.avail-OutOfStock button
+.avail-OutOfStock
 {
-    display:none;
-    &:before {content:"Nema";line-height:2.5em;}
+    button {display:none;}
+
+    &:before {content:"Comming soon";line-height:2.5em;}
 }
 
 

@@ -51,7 +51,7 @@
 
         <div class="col-xs-12 text-xs-center avail-{{availability}}" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
             <button class="btn btn-lg btn-outline-success">
-                Order for
+                <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                 <span itemprop="priceCurrency" content="{{currency}}" class="currency-{{currency}}"></span>
                 <span itemprop="price" content="{{price}}">{{price}}</span>
                 <link itemprop="availability" href="http://schema.org/{{availability}}" />
