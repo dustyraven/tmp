@@ -1,3 +1,5 @@
 <?php
+require_once 'inc/common.php';
 
-include './test.html';
+echo getTpl('main');
+

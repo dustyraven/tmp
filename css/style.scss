@@ -1,0 +1,76 @@
+.currency-BGN:before {content: "BGN";}
+.currency-EUR:before {content: "EUR";}
+
+.card.prod
+{
+    margin-bottom:1em;
+    padding-bottom:2.5em;
+    max-height:500px;
+
+    h3 {font-size:1.25rem;}
+
+    .card-img-overlay {display:none;}
+    &:hover .card-img-overlay {display:initial;background:rgba(255,255,255,.75);}
+
+    .prod-footer {position:absolute;bottom:0;width:100%;margin:1em 0;}
+
+    [itemprop="sku"] {
+        position:absolute;
+        top:0;
+        left:0;
+        padding:0 1em;
+        background: rgba(255,255,255,.85);
+        &:before {
+            content: "#";
+        }
+    }
+
+}
+.avail-OutOfStock button
+{
+    display:none;
+    &:before {content:"Nema";line-height:2.5em;}
+}
+
+
+
+.carousel-item>img {
+    width: 100%;
+}
+
+
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    font-size: 1em;
+
+    span.star {
+        font-family: FontAwesome;
+        font-weight: normal;
+        font-style: normal;
+        display: inline-block;
+
+        &:hover {cursor: pointer;}
+
+        &:before {
+            content: "\f006";
+            padding-right: 5px;
+            color: #777;
+        }
+    }
+
+    .card.prod & {
+        position:absolute;
+        top: 0;
+        right: 0;
+        background: rgba(255,255,255,.85);
+    }
+
+}
+
+
+.rating span.star:hover:before,
+.rating span.star:hover~span.star:before {
+    content: "\f005";
+    color: #e3cf7a;
+}

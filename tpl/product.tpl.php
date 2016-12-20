@@ -4,7 +4,7 @@
 
         <h1 class="col-xs-12" itemprop="name">{{name}}</h1>
 
-        <div id="product-caroucel" class="carousel slide col-sm-6" data-ride="carousel">
+        <div id="product-caroucel" class="carousel slide col-sm-6" _data-ride="carousel">
             <ol class="carousel-indicators">
                 {{#images}}
                     <li data-target="#product-caroucel" data-slide-to="{{index}}"{{#active}} class="active"{{/active}}></li>
@@ -36,7 +36,15 @@
             </div>
 
             <div class="col-xs-12" itemprop="description">
-                {{description}}
+
+                <ul class="list-group">
+                    {{#parameters}}
+                        <li class="list-group-item">{{key}}: {{val}}</li>
+                    {{/parameters}}
+                </ul>
+
+                <p>{{description}}</p>
+
             </div>
 
         </div>
