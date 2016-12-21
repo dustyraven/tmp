@@ -13,7 +13,7 @@
             <div class="carousel-inner" role="listbox">
                 {{#images}}
                     <div class="carousel-item{{#active}} active{{/active}}">
-                        <img class="img-fluid" itemprop="image" src="{{src}}" alt="{{alt}}">
+                        <img class="img-fluid" itemprop="image" src="img/{{src}}" alt="{{alt}}">
                     </div>
                 {{/images}}
             </div>
@@ -30,32 +30,32 @@
 
         <div class="col-sm-6">
 
-            <div class="col-xs-12" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
-                Rated <span itemprop="ratingValue">{{rating}}</span>/5
-                based on <span itemprop="reviewCount">{{votes}}</span> customer reviews
+            <ul class="list-group">
+                {{#parameters}}
+                    <li class="list-group-item">{{key}}: {{val}}</li>
+                {{/parameters}}
+            </ul>
+
+            <div class="rating col-xs-12 text-xs-center" title="{{rating}}/5 ({{votes}})" itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+                <span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span><span class="star"></span>
+                <meta itemprop="ratingValue" content="{{rating}}">
+                <meta itemprop="reviewCount" content="{{votes}}">
             </div>
 
-            <div class="col-xs-12" itemprop="description">
-
-                <ul class="list-group">
-                    {{#parameters}}
-                        <li class="list-group-item">{{key}}: {{val}}</li>
-                    {{/parameters}}
-                </ul>
-
-                <p>{{description}}</p>
-
-            </div>
 
         </div>
 
         <div class="col-xs-12 text-xs-center avail-{{availability}}" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-            <button class="btn btn-lg btn-outline-success">
+            <button class="btn btn-lg btn-outline-success order">
                 <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                 <span itemprop="priceCurrency" content="{{currency}}" class="currency-{{currency}}"></span>
                 <span itemprop="price" content="{{price}}">{{price}}</span>
                 <link itemprop="availability" href="http://schema.org/{{availability}}" />
             </button>
+        </div>
+
+        <div class="col-xs-12" itemprop="description">
+            {{description}}
         </div>
 
         <div class="row col-xs-12">

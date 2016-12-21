@@ -43,38 +43,11 @@ function _get(url, callback)
     xmlhttp.send();
 }
 
-function _click(e) {
 
-    e = e || event;
-    var el = e.target || e.srcElement;
-    var tg = null, href= null;
+function dataLoad()
+{
+    _("#loader").style.display = "block";
 
-    if ((el.nodeName || el.tagName).toLowerCase()==='a'){
-        tg = el;
-    }
-    else
-    {
-        while (el = el.parentNode){
-            if ((el.nodeName || el.tagName).toLowerCase()==='a'){
-                tg = el;
-                break;
-            }
-        }
-    }
-
-    if(tg && (href = tg.getAttribute("href")) && 0 !== href.indexOf("#") )
-    {
-        e.preventDefault();
-        e.stopPropagation();
-        console.warn("CLICK: " + href.replace(/^\/+|\/+$/g, ''));
-        dataLoad(href.replace(/^\/+|\/+$/g, ''));
-        return false;
-    }
-}
-
-
-function dataLoad() {
-    console.log(arguments);
     var url = './data.json.php', params = [];
     if(arguments.length)
     {
@@ -89,11 +62,12 @@ function dataLoad() {
         if(params.length)
             url += '?' + params.join("&");
     }
-    console.warn(url);
+
     _get(url, dataResponce);
 }
 
-function dataResponce(responce) {
+function dataResponce(responce)
+{
     var r;
 
     if(!responce instanceof Array)
@@ -136,8 +110,41 @@ function dataResponce(responce) {
             console.error(r);
     }
 
+    _("#loader").style.display = "none";
+
     //console.log(JSON.stringify(responce, null, '\t'));
 }
+
+
+function _click(e) {
+
+    e = e || event;
+    var el = e.target || e.srcElement;
+    var tg = null, href= null;
+
+    if ((el.nodeName || el.tagName).toLowerCase()==='a'){
+        tg = el;
+    }
+    else
+    {
+        while (el = el.parentNode){
+            if ((el.nodeName || el.tagName).toLowerCase()==='a'){
+                tg = el;
+                break;
+            }
+        }
+    }
+
+    if(tg && (href = tg.getAttribute("href")) && 0 !== href.indexOf("#") )
+    {
+        e.preventDefault();
+        e.stopPropagation();
+        console.warn("CLICK: " + href.replace(/^\/+|\/+$/g, ''));
+        dataLoad(href.replace(/^\/+|\/+$/g, ''));
+        return false;
+    }
+}
+
 
 
 //////////////////////////
@@ -148,7 +155,9 @@ function dataResponce(responce) {
 
 document.addEventListener('click', _click, true);
 
-var base = 'https://dusty.work/tmp/', href = document.location.href.replace(base,'');
+var base = $('base').attr('href'),
+    href = document.location.href.replace(base,'');
+
 dataLoad(href);
 
 

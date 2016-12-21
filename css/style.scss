@@ -1,6 +1,29 @@
 .currency-BGN:before {content: "BGN";}
 .currency-EUR:before {content: "EUR";}
 
+body {padding-top:70px;}
+
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+#loader {
+
+    z-index:9999;
+    position:fixed;
+    top:0;bottom:0;left:0;right:0;
+    background: rgba(255,255,255,.25);
+
+    i {
+        color:#CCC;
+    }
+}
+
 .card.prod
 {
     margin-bottom:1em;
@@ -24,11 +47,15 @@
             content: "#";
         }
     }
+}
+
+.product button.order {
 
 }
+
 .avail-OutOfStock
 {
-    button {display:none;}
+    button.order {display:none;}
 
     &:before {content:"Comming soon";line-height:2.5em;}
 }
@@ -43,7 +70,7 @@
 .rating {
     unicode-bidi: bidi-override;
     direction: rtl;
-    font-size: 1em;
+    font-size: 2em;
 
     span.star {
         font-family: FontAwesome;
@@ -61,6 +88,7 @@
     }
 
     .card.prod & {
+        font-size: 1em;
         position:absolute;
         top: 0;
         right: 0;

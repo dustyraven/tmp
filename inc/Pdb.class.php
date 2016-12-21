@@ -59,6 +59,17 @@ class Pdb {
                         ],
 
                         [
+                            'name'  =>  'Placket',
+                            'position' => 4,
+                            'values' => [
+                                    1 => 'Traditional',
+                                    2 => '3/4',
+                                    3 => 'French',
+                                    4 => 'Fly',
+                                ],
+                        ],
+
+                        [
                             'name'  =>  'Collar',
                             'position' => 5,
                             'values' => [
@@ -155,16 +166,30 @@ class Pdb {
     }
 
 
-
-    public function generateProduct($type = 1)
+    public function isSku($sku)
     {
-        $sku = str_pad('', $this->_skuLen, '0');
-        $sku[0] = $type;
+        return (strlen($sku) == $this->_skuLen && strlen(preg_replace('/\D/','',$sku)) == $this->_skuLen);
+    }
 
-        foreach($this->_params[$type] as $p)
-            $sku[$p['position']] = array_rand($p['values']);
+
+    public function generateProduct($type = 1, $sku = false)
+    {
+        if(!$sku)
+        {
+            $sku = str_pad('', $this->_skuLen, '0');
+            $sku[0] = $type;
+
+            foreach($this->_params[$type] as $p)
+                $sku[$p['position']] = array_rand($p['values']);
+        }
 
         $p = $this->resolveProduct($sku);
+
+        $images  = glob('img/product*.png');
+        foreach($images as $k => $v)
+            $images[$k] = basename($v);
+        shuffle($images);
+        $p->images = array_slice($images, 0, 5);
 
         $p->price = number_format(mt_rand(1000,10000)/100, 2);
         $p->votes = mt_rand(10,100);
@@ -179,24 +204,22 @@ class Pdb {
 
     public function resolveProduct($sku)
     {
-        if(strlen($sku) != $this->_skuLen)
+        if(!$this->isSku($sku))
             throw new Exception("Invalid SKU {$sku}", 1);
 
         $p = (object)[
-                    'sku'           => '',
+                    'sku'           => $sku,
                     'rating'        => 2.5,
                     'votes'         => 0,
                     'name'          => 'Product title',
                     'short'         => 'Product short description',
                     'description'   => 'Product long description',
-                    'images'        => ['product.jpg','product1.jpg','product2.jpg','product3.jpg','product4.jpg',],
+                    'images'        => ['product1.png','product2.png','product3.png','product4.png','product5.png',],
                     'price'         => 0,
                     'currency'      => 'BGN',
                     'availability'  => 'InStock',
                     'parameters'    => (object)[],
                 ];
-
-        $p->sku = $sku;
 
         $type = $sku[0];
 

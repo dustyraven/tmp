@@ -4,6 +4,8 @@ error_reporting(E_ALL);
 require_once __DIR__.DIRECTORY_SEPARATOR.'Pdb.class.php';
 
 
+define('BASE','https://dusty.work/tmp/');
+
 function getTpl($tpl)
 {
     ob_start();

@@ -4,6 +4,26 @@
 .currency-EUR:before {
   content: "EUR"; }
 
+body {
+  padding-top: 70px; }
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); }
+
+#loader {
+  z-index: 9999;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.25); }
+  #loader i {
+    color: #CCC; }
+
 .card.prod {
   margin-bottom: 1em;
   padding-bottom: 2.5em;
@@ -29,7 +49,7 @@
     .card.prod [itemprop="sku"]:before {
       content: "#"; }
 
-.avail-OutOfStock button {
+.avail-OutOfStock button.order {
   display: none; }
 .avail-OutOfStock:before {
   content: "Comming soon";
@@ -41,7 +61,7 @@
 .rating {
   unicode-bidi: bidi-override;
   direction: rtl;
-  font-size: 1em; }
+  font-size: 2em; }
   .rating span.star {
     font-family: FontAwesome;
     font-weight: normal;
@@ -54,6 +74,7 @@
       padding-right: 5px;
       color: #777; }
   .card.prod .rating {
+    font-size: 1em;
     position: absolute;
     top: 0;
     right: 0;

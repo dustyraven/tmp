@@ -1,22 +1,35 @@
 <?php
 require_once 'inc/common.php';
 
+$get = [];
+
+if(count($_GET))
+{
+    $tmp = array_keys($_GET);
+
+    if('product' == $tmp[0])
+        $get['product'] = false;
+    elseif($PDB->isSku($tmp[0]))
+        $get['product'] = $tmp[0];
+}
+
 $lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
 $data = [
-        (object)['url' => 'test.html'],
+        //(object)['url' => 'test.html'],
 
         //(object)['url' => basename($_SERVER['HTTP_REFERER'])],
 
         (object)[
             'selector'  => '#main',
-            'template'  => getTpl('btn'),
+            'template'  => getTpl('home'),
             'data'      =>  [
                 (object)['name' => 'Dusty', 'family' => 'Raven'],
                 (object)['name' => 'Spas', 'family' => 'Petrov'],
                 (object)['name' => 'Freddie', 'family' => 'Mercury'],
             ],
         ],
+
         (object)[
             'selector'  => 'h1',
             'html'      => 'TESTING',
@@ -35,17 +48,23 @@ $data = [
         ],
         (object)[
             'selector'  => '#get',
-            'html'      => print_r($_GET, true),
+            'html'      => print_r($get, true),
         ],
     ];
 
 
 
-if(array_key_exists('product', $_GET))
+if(array_key_exists('product', $get))
 {
-    $data = updateData($data, 'title', (object)['selector' => 'title','text' => 'Product']);
-    $data = updateData($data, 'url', (object)['url' => 'product']);
 
+    $sku = $get['product'];
+
+    $product = $PDB->generateProduct(1, $sku);
+
+    $data = updateData($data, 'title', (object)['selector' => 'title','text' => $product->name]);
+    $data = updateData($data, 'url', (object)['url' => $product->sku]);
+
+    // reviews
     $reviews = [
             (object)[
                     'name'          => 'review name',
@@ -62,27 +81,7 @@ if(array_key_exists('product', $_GET))
                     'description'   => 'abe lorem ala bala, da e ipsum portokala',
                 ],
         ];
-
-
-    $product = (object)[
-                    'name' => 'Prod1 name ala bala portokala',
-                    'description' => 'Prod1 long description: '.$lorem,
-                    'price'     => 64.23,
-                    'currency'  => 'BGN',
-                    'availability' => 'InStock',
-                    'images'    => [
-                                    (object)['index' => 0, 'src' => 'product.jpg', 'alt' => '', 'active' => 'active'],
-                                    (object)['index' => 1, 'src' => 'product.jpg', 'alt' => ''],
-                                    (object)['index' => 2, 'src' => 'product.jpg', 'alt' => ''],
-                                    (object)['index' => 3, 'src' => 'product.jpg', 'alt' => ''],
-                                    (object)['index' => 4, 'src' => 'product.jpg', 'alt' => ''],
-                            ],
-                    'rating'    => 4.2,
-                    'votes'     => 667,
-                ];
-
-
-    $product = $PDB->generateProduct(1);
+    $product->reviews = $reviews;
 
     // images
     $images = [];
@@ -96,8 +95,8 @@ if(array_key_exists('product', $_GET))
         $parameters[] = (object)['key' => $key, 'val' => $val];
     $product->parameters = $parameters;
 
-    // reviews
-    $product->reviews = $reviews;
+    // rating
+    $product->rating = number_format(round($product->rating, 1),2);
 
     $data[] = (object)[
                 'selector'  => '#main',
@@ -113,8 +112,11 @@ if(array_key_exists('list', $_GET))
 
     $products = [];
     for($i = 0; $i < 20; $i++)
-        $products[] = $PDB->generateProduct(1);
-
+    {
+        $product = $PDB->generateProduct(1);
+        $product->rating = number_format(round($product->rating, 1),2);
+        $products[] = $product;
+    }
 
     $data[] = (object)[
                 'selector'  => '#main',
