@@ -285,6 +285,7 @@ class Pdb {
         $pattern = '/^' . str_replace('-', '.', $params->filter) . '$/';
 
         $filtered = [];
+        $possible = [];
         $index = 0;
         $start = ($params->page - 1) * $params->rpp;
         $end = $start + $params->rpp;
@@ -296,6 +297,8 @@ class Pdb {
 
             ++$index;
 
+            $possible[] = $p->sku;
+
             if($index >= $start && $index <= $end)
             {
                 $p->rating = number_format(round($p->rating, 1),2);
@@ -305,7 +308,10 @@ class Pdb {
         }
 
 
-        return (object)['products' => $filtered, 'count' => $index];
+        return (object)[
+                'products' => $filtered,
+                'count' => $index
+            ];
     }
 
 
