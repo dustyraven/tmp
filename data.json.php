@@ -1,17 +1,6 @@
 <?php
-require_once 'inc/common.php';
+//require 'inc/common.php';
 
-$get = [];
-
-if(count($_GET))
-{
-    $tmp = array_keys($_GET);
-
-    if('product' == $tmp[0])
-        $get['product'] = false;
-    elseif($PDB->isSku($tmp[0]))
-        $get['product'] = $tmp[0];
-}
 
 $lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
@@ -47,7 +36,7 @@ $data = [
             'html'      => getTpl('left'),
         ],
         (object)[
-            'selector'  => '#get',
+            'selector'  => '#dump',
             'html'      => print_r($get, true),
         ],
     ];
@@ -78,7 +67,7 @@ if(array_key_exists('product', $get))
                     'author'        => 'some author 2',
                     'date'          => '2016-12-07',
                     'rating'        => 3,
-                    'description'   => 'abe lorem ala bala, da e ipsum portokala',
+                    'description'   => $lorem,
                 ],
         ];
     $product->reviews = $reviews;
@@ -105,24 +94,22 @@ if(array_key_exists('product', $get))
                 ];
 }
 
-if(array_key_exists('list', $_GET))
+if(array_key_exists('list', $get))
 {
+    $filter = $get['list'];
+
     $data = updateData($data, 'title', (object)['selector' => 'title','text' => 'List']);
-    $data = updateData($data, 'url', (object)['url' => 'list']);
+    $data = updateData($data, 'url', (object)['url' => $filter]);
 
-    $products = [];
-    for($i = 0; $i < 20; $i++)
-    {
-        $product = $PDB->generateProduct(1);
-        $product->rating = number_format(round($product->rating, 1),2);
-        $products[] = $product;
-    }
+    $filtered = $PDB->filterProducts(['filter' => $filter]);
 
-    $data[] = (object)[
+    $tmp = (object)[
                 'selector'  => '#main',
                 'template'  => getTpl('products'),
-                'data'      =>  $products,
+                'data'      => $filtered->products,
             ];
+    $data = updateData($data, '#main', $tmp);
+
 
 }
 

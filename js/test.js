@@ -15,9 +15,7 @@ function _(selector)
 }
 
 
-
-
-function _get(url, callback)
+function _ajax(url, callback)
 {
     var xmlhttp = new XMLHttpRequest();
 
@@ -40,6 +38,7 @@ function _get(url, callback)
     };
 
     xmlhttp.open("GET", url, true);
+    xmlhttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
     xmlhttp.send();
 }
 
@@ -48,7 +47,8 @@ function dataLoad()
 {
     _("#loader").style.display = "block";
 
-    var url = './data.json.php', params = [];
+    var url = '', params = [];
+
     if(arguments.length)
     {
         for (var i = 0, len = arguments.length; i < len; i++)
@@ -63,12 +63,20 @@ function dataLoad()
             url += '?' + params.join("&");
     }
 
-    _get(url, dataResponce);
+    _ajax(url, dataResponce);
 }
+
+
 
 function dataResponce(responce)
 {
     var r;
+
+    if('object' !== typeof responce)
+    {
+        console.error('invalid responce of type ' + typeof responce);
+        return;
+    }
 
     if(!responce instanceof Array)
         responce = [responce];
@@ -147,6 +155,21 @@ function _click(e) {
 
 
 
+
+var _test = (function () {
+
+    function init()
+    {
+        console.log('_test', this, arguments);
+    }
+
+    return function () {
+        return new init()
+    };
+})();
+
+
+
 //////////////////////////
 //      A C T I O N     //
 //////////////////////////
@@ -159,15 +182,6 @@ var base = $('base').attr('href'),
     href = document.location.href.replace(base,'');
 
 dataLoad(href);
-
-
-
-
-
-
-
-
-
 
 
 

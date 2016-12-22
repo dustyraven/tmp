@@ -45,6 +45,8 @@
 
         </div>
 
+        <div class="col-xs-12">&nbsp;</div>
+
         <div class="col-xs-12 text-xs-center avail-{{availability}}" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
             <button class="btn btn-lg btn-outline-success order">
                 <i class="fa fa-shopping-basket" aria-hidden="true"></i>
@@ -53,6 +55,8 @@
                 <link itemprop="availability" href="http://schema.org/{{availability}}" />
             </button>
         </div>
+
+        <div class="col-xs-12">&nbsp;</div>
 
         <div class="col-xs-12" itemprop="description">
             {{description}}

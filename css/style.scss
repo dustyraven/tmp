@@ -3,6 +3,15 @@
 
 body {padding-top:70px;}
 
+/*
+#left {background:rgba(200,0,0,.5);}
+#main {background:rgba(00,200,0,.5);}
+#content {background:rgba(0,0,200,.5);}
+.col-sm-6 {outline:1px dashed red;}
+.col-xs-12 {outline:1px dashed blue;}
+*/
+
+.carousel-control {background:transparent !important;}
 
 .centered {
     position: fixed;

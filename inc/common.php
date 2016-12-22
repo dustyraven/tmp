@@ -1,7 +1,16 @@
 <?php
 error_reporting(E_ALL);
 
+spl_autoload_register(function($class){
+        $file = '/var/www/lib/'.str_replace('_', '/', $class).'.class.php';
+        if(file_exists($file)) require $file;
+});
+
+dUtils::common_init();
+dError::init(true);
+
 require_once __DIR__.DIRECTORY_SEPARATOR.'Pdb.class.php';
+require_once __DIR__.DIRECTORY_SEPARATOR.'dispatcher.php';
 
 
 define('BASE','https://dusty.work/tmp/');

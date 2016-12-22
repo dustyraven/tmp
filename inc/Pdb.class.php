@@ -160,8 +160,14 @@ class Pdb {
             ];
 
 
+    private $_products = [];
+
+
     public function __construct()
     {
+        for($i = 0; $i < 200; $i++)
+            $this->_products[] = $this->generateProduct(1);
+
         //echo '<pre>'; print_r($this->generateProduct(1)); die;
     }
 
@@ -171,17 +177,33 @@ class Pdb {
         return (strlen($sku) == $this->_skuLen && strlen(preg_replace('/\D/','',$sku)) == $this->_skuLen);
     }
 
+    public function isFilter($filter)
+    {
+        return (
+            strlen($filter) == $this->_skuLen &&
+            strpos($filter, '-') !== false &&
+            strlen(preg_replace('/[^\d^-]/','',$filter)) == $this->_skuLen
+        );
+    }
+
+
+    public function generateSKU($type = 1)
+    {
+        $sku = str_pad('', $this->_skuLen, '0');
+        $sku[0] = $type;
+
+        foreach($this->_params[$type] as $p)
+            $sku[$p['position']] = array_rand($p['values']);
+
+        return $sku;
+    }
 
     public function generateProduct($type = 1, $sku = false)
     {
-        if(!$sku)
-        {
-            $sku = str_pad('', $this->_skuLen, '0');
-            $sku[0] = $type;
+        global $lorem;
 
-            foreach($this->_params[$type] as $p)
-                $sku[$p['position']] = array_rand($p['values']);
-        }
+        if(!$sku)
+            $sku = $this->generateSKU($type);
 
         $p = $this->resolveProduct($sku);
 
@@ -196,6 +218,8 @@ class Pdb {
         $p->rating = mt_rand(100000,500000)/100000;
         $p->availability = mt_rand(0,100)%3 ? 'InStock' : 'OutOfStock';
 
+        $p->description = $lorem;
+
         return $p;
     }
 
@@ -204,6 +228,8 @@ class Pdb {
 
     public function resolveProduct($sku)
     {
+        $sku = (string)$sku;
+
         if(!$this->isSku($sku))
             throw new Exception("Invalid SKU {$sku}", 1);
 
@@ -214,7 +240,7 @@ class Pdb {
                     'name'          => 'Product title',
                     'short'         => 'Product short description',
                     'description'   => 'Product long description',
-                    'images'        => ['product1.png','product2.png','product3.png','product4.png','product5.png',],
+                    'images'        => [],
                     'price'         => 0,
                     'currency'      => 'BGN',
                     'availability'  => 'InStock',
@@ -236,6 +262,50 @@ class Pdb {
         }
 
         return $p;
+    }
+
+
+    public function filterProducts($params = [])
+    {
+        $defaults = (object)[
+                'rpp'   => 16,
+                'page'  => 1,
+            ];
+
+        $params = (object)$params;
+
+        foreach($defaults as $k => $v)
+            if(!isset($params->$k))
+                $params->$k = $v;
+
+
+        if(empty($params->filter) || !$this->isFilter($params->filter))
+            throw new Exception('Invalid filter', 1);
+
+        $pattern = '/^' . str_replace('-', '.', $params->filter) . '$/';
+
+        $filtered = [];
+        $index = 0;
+        $start = ($params->page - 1) * $params->rpp;
+        $end = $start + $params->rpp;
+
+        foreach($this->_products as $p)
+        {
+            if(!preg_match($pattern, $p->sku))
+                continue;
+
+            ++$index;
+
+            if($index >= $start && $index <= $end)
+            {
+                $p->rating = number_format(round($p->rating, 1),2);
+                $filtered[] = $p;
+            }
+
+        }
+
+
+        return (object)['products' => $filtered, 'count' => $index];
     }
 
 

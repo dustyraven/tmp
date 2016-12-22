@@ -41,7 +41,7 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <pre id="get"></pre>
+                <pre id="dump"></pre>
             </div>
         </div>
     </div>

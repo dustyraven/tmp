@@ -1,5 +1,9 @@
 <?php
 require_once 'inc/common.php';
 
-echo getTpl('main');
+
+if(AJAX)
+    require 'data.json.php';
+else
+    echo getTpl('main');
 
