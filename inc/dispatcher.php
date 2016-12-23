@@ -1,9 +1,14 @@
 <?php
 
+if(!empty($_POST['_sess']))
+    $_sess = base64_decode($_POST['_sess']);
+
 $get = [];
 
 if(!count($_GET))
     return $get;
+
+
 
 $tmp = array_keys($_GET);
 
