@@ -1,3 +1,6 @@
+declare var $: jQuery;
+declare var Mustache: Mustache;
+
 
 function _(selector?: string) {
 
@@ -45,7 +48,7 @@ class _ {
 
 
 class Sess {
-    private data: object;
+    private data;
 
     constructor() {
         let tmp = localStorage.getItem('_sess');
@@ -123,7 +126,7 @@ function dataLoad(args?) {
             if (typeof arguments[i] === 'string') {
                 params.push(arguments[i]);
             } else {
-                console.log(typeof arguments[i], arguments[i]);
+                console.error(typeof arguments[i], arguments[i]);
             }
         }
 
@@ -165,6 +168,9 @@ function dataResponce(responce: any) {
             } else {
                 console.warn(r);
             }
+        } else if (r.modal && r.data) {
+            $(Mustache.render(r.template, r.data)).appendTo('body');
+            _modal(r.modal);
         } else if (r.url) {
             history.pushState(r, '', r.url);
         } else {
@@ -172,12 +178,14 @@ function dataResponce(responce: any) {
         }
     }
 
+    $('[data-toggle="popover"]').popover({container: 'body'});
+
     _('#loader').style.display = 'none';
 
     // console.log(JSON.stringify(responce, null, '\t'));
 }
 
-
+/*
 function __click(e) {
 
     e = e || event;
@@ -211,14 +219,51 @@ function __click(e) {
         return false;
     }
 }
+//*/
+
+let clickers = {
+
+    order: (el) => {
+        el = $(el);
+
+        console.warn('BUTTON CLICK', el);
+    },
+
+    setLang: (el) => {
+        let lang = $(el).text().trim();
+        $('a#topNavLang').text(lang);
+        _sess.set('lang', lang);
+        _reload();
+    },
+
+    _setCurrency: (el) => {
+        let curr = $(el).text().trim();
+        $('a#topNavCurr').text(curr);
+        _sess.set('currency', curr);
+        _reload();
+    }
+
+
+};
+
 
 function _click(e) {
 
-    _stop(e);
 
     let tag = (this.nodeName || this.tagName).toLowerCase();
+    let classList = this.className.split(/\s+/);
+
+    for (let c of classList) {
+        if ('function' === typeof clickers[c]) {
+            clickers[c](this);
+        } else if ('function' === typeof window[c]) {
+            window[c](this);
+        }
+    }
 
     if ('a' === tag) {
+
+        _stop(e);
 
         let href = this.getAttribute('href');
 
@@ -226,32 +271,76 @@ function _click(e) {
             return false;
 
         if (href && 0 !== href.indexOf('#')) {
-
             console.warn('CLICK: ' + href.replace(/^\/+|\/+$/g, ''));
             dataLoad( href.replace(/^\/+|\/+$/g, '') );
             return false;
+        } else {
+            console.warn('#CLICK: ' + this);
         }
 
     } else if ('button' === tag) {
-
-        let classList = this.className.split(/\s+/);
-
-        for (let c of classList) {
-            if ('function' === typeof clickers[c]) {
-                clickers[c](this);
-            }
-        }
-
-        console.log(classList);
+        console.log('BTN_CLICK: ' + this);
 
     } else {
         console.error('Unsupported tag: ' + tag);
     }
 }
 
+function _submit(e) {
+    _stop(e);
+    console.warn('SUBMIT: ' + this);
+}
+
 function _stop(event) {
     event.preventDefault();
     event.stopPropagation();
+}
+
+
+function _filterChange() {
+    let filter = [];
+    let filterLenght = 9;
+
+
+
+    $('form#filters').find('input:checked').each(function() {
+        let t = $(this);
+        filter[t.attr('name').match(/filter\[(\d+)\]/)[1]] = t.val();
+    });
+
+    for (let i = 0; i < filterLenght; i++) {
+        if (!filter[i]) {
+            filter[i] = '-';
+        }
+    }
+    dataLoad( filter.join('') );
+}
+
+function _filterRemove(el) {
+
+    let pos = $(el).find('input').val();
+    let inp = $('input.filter[name="filter[' + pos + ']"]');
+    if (inp.length) {
+        inp.prop('checked', false);
+        _filterChange();
+    }
+}
+
+
+function _reload() {
+    dataLoad( document.location.href.replace(base, '') );
+}
+
+function _modal(selector) {
+    $(selector).modal({
+        keyboard: true,
+        backdrop: 'static',
+        focus: true,
+        show: true
+    })
+    .on('hidden.bs.modal', (e) => {
+        e.target.remove();
+    });
 }
 
 /*
@@ -266,12 +355,7 @@ let _test = (function () {
     };
 })();
 */
-
-let clickers = {
-    order: (el) => {
-        console.warn('BUTTON', el);
-    }
-};
+// $("form#filters input").change(function(){console.log(this)});
 
 //////////////////////////
 //      A C T I O N     //
@@ -283,10 +367,10 @@ const base = _('base').href;
 
 // document.addEventListener('click', _click, true);
 
-$(document).on('submit', 'form', _stop);
+$(document).on('submit', 'form', _submit);
 $(document).on('click', 'a, button', _click);
-
-dataLoad( document.location.href.replace(base, '') );
+$(document).on('change', 'form#filters input', _filterChange);
+_reload();
 
 
 

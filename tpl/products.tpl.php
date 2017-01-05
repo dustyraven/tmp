@@ -2,7 +2,7 @@
     <div class="_card-deck">
 
         {{#data}}
-        <div class="col-sm-3">
+        <div class="col-sm-6 col-md-4 col-lg-3">
             <div class="card prod" itemscope itemtype="http://schema.org/Product">
 
                 <img class="card-img-top w-100" itemprop="image" src="img/{{images.0}}" alt="{{name}}" />

@@ -1,0 +1,36 @@
+.rating {
+    unicode-bidi: bidi-override;
+    direction: rtl;
+    font-size: 2em;
+
+    span.star {
+        font-family: FontAwesome;
+        font-weight: normal;
+        font-style: normal;
+        display: inline-block;
+
+        &:hover {cursor: pointer;}
+
+        &:before {
+            content: "\f006";
+            padding-right: 5px;
+            color: #777;
+        }
+    }
+
+    .card.prod & {
+        font-size: 1em;
+        position:absolute;
+        top: 0;
+        right: 0;
+        background: rgba(255,255,255,.85);
+    }
+
+}
+
+
+.rating span.star:hover:before,
+.rating span.star:hover~span.star:before {
+    content: "\f005";
+    color: #e3cf7a;
+}

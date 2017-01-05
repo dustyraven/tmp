@@ -1,0 +1,40 @@
+/*
+Syntax error: Inconsistent indentation: 11 spaces were used for indentation, but the rest of the document was indented using 4 spaces.
+        on line 99 of /home/dusty/mnt/do2/dusty.work/tmp/js/test.ts
+
+94:                 } catch (e) {
+95:                     result = xmlhttp.responseText;
+96:                 }
+97:                 if ('function' === typeof callback)
+98:                     callback(result);
+99:            } else {
+100:                console.error('XMLHttpRequest returned: ' + xmlhttp.status);
+101:            }
+102:         }
+103:     };
+104: 
+
+Backtrace:
+/home/dusty/mnt/do2/dusty.work/tmp/js/test.ts:99
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:424:in `block in tabulate'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:382:in `each'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:382:in `each_with_index'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:382:in `tabulate'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:345:in `_to_tree'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:315:in `_render'
+/usr/lib/ruby/vendor_ruby/sass/engine.rb:262:in `render'
+/usr/lib/ruby/vendor_ruby/sass/plugin/compiler.rb:362:in `update_stylesheet'
+/usr/lib/ruby/vendor_ruby/sass/plugin/compiler.rb:203:in `block in update_stylesheets'
+/usr/lib/ruby/vendor_ruby/sass/plugin/compiler.rb:201:in `each'
+/usr/lib/ruby/vendor_ruby/sass/plugin/compiler.rb:201:in `update_stylesheets'
+/usr/lib/ruby/vendor_ruby/sass/plugin.rb:81:in `update_stylesheets'
+/usr/lib/ruby/vendor_ruby/sass/exec.rb:439:in `watch_or_update'
+/usr/lib/ruby/vendor_ruby/sass/exec.rb:326:in `process_result'
+/usr/lib/ruby/vendor_ruby/sass/exec.rb:41:in `parse'
+/usr/lib/ruby/vendor_ruby/sass/exec.rb:21:in `parse!'
+/usr/bin/sass:8:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Inconsistent indentation: 11 spaces were used for indentation, but the rest of the document was indented using 4 spaces.\A         on line 99 of /home/dusty/mnt/do2/dusty.work/tmp/js/test.ts\A \A 94:                 } catch (e) {\A 95:                     result = xmlhttp.responseText;\A 96:                 }\A 97:                 if ('function' === typeof callback)\A 98:                     callback(result);\A 99:            } else {\A 100:                console.error('XMLHttpRequest returned: ' + xmlhttp.status);\A 101:            }\A 102:         }\A 103:     };\A 104: "; }

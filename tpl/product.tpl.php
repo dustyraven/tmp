@@ -62,6 +62,8 @@
             {{description}}
         </div>
 
+        <div class="col-xs-12">&nbsp;</div>
+
         <div class="row col-xs-12">
             <h2>Customer reviews:</h2>
             {{#reviews}}

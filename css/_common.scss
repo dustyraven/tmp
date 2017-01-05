@@ -1,0 +1,110 @@
+body {
+    padding-top:70px;
+    background:rgba(102,51,153,.5);
+}
+
+a {color:#444;}
+
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+#loader {
+
+    z-index:9999;
+    position:fixed;
+    top:0;bottom:0;left:0;right:0;
+    background: rgba(255,255,255,.25);
+
+    i {
+        color:#CCC;
+    }
+}
+
+a.navbar-brand {
+
+    display:inline-block;
+
+    width:85px;
+    height:38px;
+    background: transparent url("../img/wellman.png") no-repeat center;
+    background-size:round($logo-scale * $logo-width) round($logo-scale * $logo-height);
+
+    img {
+        margin-top: -10px;
+        height: 50px;
+        position: absolute;
+    }
+
+}
+
+
+
+.carousel-control {background:transparent !important;}
+
+
+.navddtgl {
+    &, button {text-transform: uppercase;}
+    img {margin-top:-3px;margin-right:3px;width:18px;height:18px;}
+}
+
+#topCardBtn {
+    margin-left:2em;
+}
+
+.card.prod
+{
+    margin-bottom:1em;
+    padding-bottom:2.5em;
+    max-height:500px;
+
+    h3 {font-size:1.25rem;}
+
+    .card-img-overlay {display:none;}
+    &:hover .card-img-overlay {display:initial;background:rgba(255,255,255,.75);}
+
+    .prod-footer {position:absolute;bottom:0;width:100%;margin:1em 0;}
+
+    [itemprop="sku"] {
+        position:absolute;
+        top:0;
+        left:0;
+        padding:0 1em;
+        background: rgba(255,255,255,.85);
+        &:before {
+            content: "#";
+        }
+    }
+}
+
+button.order {
+
+    .product & {
+
+    }
+
+    .avail-OutOfStock & {
+        display:none;
+    }
+
+}
+
+.avail-OutOfStock
+{
+    &:before {line-height:2.5em;}
+}
+
+
+
+.carousel-item>img {
+    width: 100%;
+}
+
+
+button._filterRemove i.fa-window-close {
+    color:red;
+}

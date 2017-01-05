@@ -54,34 +54,20 @@ class Pdb {
                             'position' => 2,
                             'values' => [
                                     1 => 'Cotton',
-                                    2 => 'Wool',
+                                //    2 => 'Wool',
                                 ],
                         ],
 
                         [
-                            'name'  =>  'Placket',
-                            'position' => 4,
+                            'name'  =>  'Fit',
+                            'position' => 3,
                             'values' => [
-                                    1 => 'Traditional',
-                                    2 => '3/4',
-                                    3 => 'French',
-                                    4 => 'Fly',
+                                    1 => 'Liscio',
+                                    2 => 'Riprese',
+                                    3 => 'Pieghe Laterali',
                                 ],
                         ],
-
-                        [
-                            'name'  =>  'Collar',
-                            'position' => 5,
-                            'values' => [
-                                    1 => 'Spread',
-                                    2 => 'Forward',
-                                    3 => 'Tab',
-                                    4 => 'Cutaway',
-                                    5 => 'Button',
-                                    6 => 'Club',
-                                ],
-                        ],
-
+                        /*
                         [
                             'name'  =>  'Fit',
                             'position' => 6,
@@ -94,7 +80,63 @@ class Pdb {
                                     6 => 'Club',
                                 ],
                         ],
+                        */
 
+                        [
+                            'name'  =>  'Placket',
+                            'position' => 4,
+                            'values' => [
+                                    1 => 'Liscio',    //'Traditional',
+                                    /*
+                                    2 => '3/4',
+                                    3 => 'French',
+                                    4 => 'Fly',
+                                    */
+                                ],
+                        ],
+
+                        [
+                            'name'  =>  'Collar',   // яка
+                            'position' => 5,
+                            'values' => [
+                                    1 => 'Classico italiano',
+                                    2 => 'Button down',
+                                    3 => 'Francese',
+                                    /*
+                                    1 => 'Spread',
+                                    2 => 'Forward',
+                                    3 => 'Tab',
+                                    4 => 'Cutaway',
+                                    5 => 'Button',
+                                    6 => 'Club',
+                                    */
+                                ],
+                        ],
+
+                        [
+                            'name'  =>  'Cuff',    // маншет
+                            'position' => 7,
+                            'values' => [
+                                    1 => 'Doppio uso',          // Convertible
+                                    2 => 'Classico Stondato',   // Classic
+                                ],
+                        ],
+
+                        [
+                            'name'  =>  'Size',
+                            'position' => 8,
+                            'values' => [
+                                    1 => 39,
+                                    2 => 40,
+                                    3 => 41,
+                                    4 => 42,
+                                    5 => 43,
+                                    6 => 44,
+                                    7 => 46,
+                                    8 => 48,
+                                ],
+                        ],
+/*
                         [
                             'name'  =>  'Chest size',
                             'position' => 7,
@@ -110,7 +152,6 @@ class Pdb {
                                 9 => ['name'    =>  'XXXL', 'inches'    =>  '46-48',    'cm'    =>  '116-121'],
                             ],
                         ],
-
                         [
                             'name'  =>  'Neck size',
                             'position' => 8,
@@ -126,6 +167,7 @@ class Pdb {
                                     9 => ['name'    =>  'XXXL', 'inches'    =>  '19.5',     'cm'    =>  '49.5'],
                                 ],
                         ],
+//*/
 
 
                 ],
@@ -309,9 +351,52 @@ class Pdb {
 
 
         return (object)[
-                'products' => $filtered,
-                'count' => $index
+                'products'  => $filtered,
+                'count'     => $index,
+                'possible'  => $possible,
             ];
+    }
+
+
+    public function possibleFilters($filter, $possible = [])
+    {
+        $filters = [];
+
+        $filter = str_split($filter);
+
+        for($idx = 0; $idx < $this->_skuLen; $idx++)
+        {
+            $f = [];
+
+            if(0 == $idx)
+            {
+                $f = (object)[
+                            'name' => i18n::_('Product type'),
+                            'position' => 0,
+                            'values' => [],
+                        ];
+                foreach($this->_types as $k => $v)
+                    $f->values[] = (object)['value' => $k, 'name' => i18n::_($v), 'checked' => ($filter[$idx] == $k ? 'checked' : '')];
+            }
+            else
+            {
+                foreach ($this->_params[1] as $key => $param)
+                    if($idx == $param['position'] && count($param['values']) > 1)
+                    {
+                        $vals = $param['values'];
+                        $f = (object)$param;
+                        $f->name = i18n::_($f->name);
+                        $f->values = [];
+                        foreach($vals as $k => $v)
+                            $f->values[] = (object)['value' => $k, 'name' => i18n::_($v), 'checked' => ($filter[$idx] == $k ? 'checked' : '')];
+                    }
+            }
+
+            if($f)
+                $filters[] = $f;
+        }
+
+        return $filters;
     }
 
 

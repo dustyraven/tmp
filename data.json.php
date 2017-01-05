@@ -2,12 +2,16 @@
 //require 'inc/common.php';
 
 
-$lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
 
 $data = [
         (object)['url' => BASE],
 
         //(object)['url' => basename($_SERVER['HTTP_REFERER'])],
+        (object)[
+            'selector'  => '#layout',
+            'template'  => getTpl('layout3c'),
+            'data'      =>  [],
+        ],
 
         (object)[
             'selector'  => '#main',
@@ -21,19 +25,26 @@ $data = [
 
         (object)[
             'selector'  => 'h1',
-            'html'      => 'TESTING',
+            'html'      => 'WellMan',
         ],
         (object)[
             'selector'  => 'title',
-            'text'      => 'TESTISI',
+            'text'      => 'WellMan',
         ],
         (object)[
             'selector'  => 'nav',
-            'html'      => getTpl('nav'),
+            'template'  => getTpl('nav'),
+            'data'      => [
+                            'lang' => LANG,
+                            'langs' => $langs,
+                            'currency' => CURRENCY,
+                            'currencies' => $currencies
+                        ],
         ],
         (object)[
             'selector'  => '#left',
-            'html'      => getTpl('left'),
+            'template'  => getTpl('left'),
+            'data'      => [],
         ],
         (object)[
             'selector'  => '#dump',
@@ -41,14 +52,29 @@ $data = [
         ],
         (object)[
             'selector'  => '#topCardContent',
-            'html'      => 'AAA',
+            'html'      => '0.00',
         ],
-
+        (object)[
+            'selector'  => '#langcurcss',
+            'text'      => getTpl('langcurcss'),
+        ],
+        /*
+        (object)[
+            'modal'     => '#myModal',
+            'template'  => getTpl('modal'),
+            'data'      => (object)[
+                            'title' => 'Some title',
+                            'footer' => ' '
+                           ],
+        ],
+        */
 
     ];
 
 
-
+/**
+ *  PRODUCT
+ */
 if(array_key_exists('product', $get))
 {
 
@@ -58,6 +84,7 @@ if(array_key_exists('product', $get))
 
     $data = updateData($data, 'title', (object)['selector' => 'title','text' => $product->name]);
     $data = updateData($data, 'url', (object)['url' => $product->sku]);
+    $data = updateData($data, '#layout', (object)['selector' => '#layout','template' => getTpl('layout2c'),'data' => [] ]);
 
     // reviews
     $reviews = [
@@ -100,11 +127,15 @@ if(array_key_exists('product', $get))
                 ];
 }
 
+
+/**
+ *  LIST
+ */
 if(array_key_exists('list', $get))
 {
     $filter = $get['list'];
 
-    $data = updateData($data, 'title', (object)['selector' => 'title','text' => 'List']);
+    $data = updateData($data, 'title', (object)['selector' => 'title','text' => i18n::_('Products List') ]);
     $data = updateData($data, 'url', (object)['url' => $filter]);
 
     $filtered = $PDB->filterProducts(['filter' => $filter]);
@@ -117,8 +148,43 @@ if(array_key_exists('list', $get))
     $data = updateData($data, '#main', $tmp);
 
 
+    $possible = $PDB->possibleFilters($filter, $filtered->possible);
+
+
+
+    $tmp = (object)[
+                'selector'  => '#left',
+                'template'  => getTpl('left'),
+                'data'      => $possible,
+            ];
+    $data = updateData($data, '#left', $tmp);
+
+
+
+    $bc = [];
+    foreach($possible as $poss)
+    {
+        foreach($poss->values as $val)
+        {
+            if($val->checked)
+            {
+                $bc[] = (object)['name' => $poss->name, 'position' => $poss->position, 'value' => $val->name];
+            }
+        }
+    }
+    $tmp = (object)[
+                'selector'  => '#breadcrumbs',
+                'template'  => getTpl('bcfilter'),
+                'data'      => $bc,
+            ];
+    $data = updateData($data, '#breadcrumbs', $tmp);
+
 }
 
 
-ob_start('ob_gzhandler');
+/**
+ *  OUTPUT
+ */
+//ob_start('ob_gzhandler');
 echo json_encode($data);
+
